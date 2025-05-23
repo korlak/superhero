@@ -28,9 +28,10 @@ cd client
 npm install
 ```
 ### 3. Налаштування БД
-- Встановити [PostgreSQL](https://www.pgadmin.org/download/pgadmin-4-windows/)
+- Встановити [PostgreSQL](https://sbp.enterprisedb.com/getfile.jsp?fileid=1259563)
 - Створити БД
 - Створити .env в server та налаштувати .env файл
+- В client package.json замінити `"proxy": "http://localhost:5005"` на ваш порт
 #### Приклад .env:
 ```bash
 PORT=3001
@@ -116,3 +117,4 @@ npm start
 4. Видалення папок зображень неіснуючих героїв (Якщо герой видалений з БД, його папка залишається).
 5. Покращити UX при завантаженні зображень (показати лоадер, прев’ю, обмежити розмір).
 6. Опціонально додати pipes та guard, ролі ADMIN, USER і т.д.
+7. Валідація даних в формі
