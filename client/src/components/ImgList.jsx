@@ -12,7 +12,7 @@ export default function ImgList({ images, width, height, maxHeight, cols, onImag
 		if (!selectedImage) return;
 
 		try {
-			await axios.patch(`/heroes/${heroId}/image`, { imagePath: selectedImage });
+			await axios.patch(`/heroes/${heroId}/image/del`, { imagePath: selectedImage });
 			onImagesChange(images.filter(img => img !== selectedImage));
 			setSelectedImage(null);
 		} catch (err) {

@@ -34,8 +34,15 @@ export class HeroesController {
     return this.heroesService.remove(Number(id));
   }
 
-  @Patch(':id/image')
-  deleteImage(@Param('id') id: string, @Body('imagePath') imagePath: string){
+  @Patch(':id/image/del')
+  deleteImage(@Param('id') id: string, @Body('imagePath') imagePath: string) {
     return this.heroesService.deleteImage(id, imagePath)
   }
+
+  @Post(':id/image/add')
+  @UseInterceptors(AnyFilesInterceptor())
+  addImage(@Param('id') id: number, @UploadedFiles() images: any) {
+    return this.heroesService.addImage(Number(id), images);
+  }
+
 }

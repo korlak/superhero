@@ -57,7 +57,7 @@ export class HeroesService {
     }
 
     async deleteImage(id: string, imagePath: string) {
-        const hero = await this.heroRepository.findByPk(id); 
+        const hero = await this.heroRepository.findByPk(id);
         if (!hero) throw new HttpException('Hero not found', HttpStatus.NOT_FOUND);
 
         const fullPath = path.resolve(__dirname, '..', 'static', imagePath);
@@ -69,6 +69,21 @@ export class HeroesService {
         await hero.save();
 
         return { message: 'Image deleted successfully' };
+    }
+
+    async addImage(id: number, images: any) {
+        const hero = await this.heroRepository.findByPk(id);
+        if (!hero) {
+            throw new HttpException('Героя не знайдено', HttpStatus.NOT_FOUND);
+        }
+
+        const folderName = hero.id.toString();
+        const fileNames = await this.filesService.uploadFiles(images, folderName);
+
+        hero.images = [...(hero.images || []), ...fileNames];
+        await hero.save();
+
+        return { message: 'Images added successfully', filenames: fileNames };
     }
 
 }
