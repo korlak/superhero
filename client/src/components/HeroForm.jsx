@@ -6,11 +6,13 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import ImgList from './ImgList';
+import UploadButton from './UploadButton'
 
 const HeroForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditing = Boolean(id);
+  const [images, setImages] = useState([]);
   const [errorMessage, setErrorMessage] = React.useState(null);
   const [form, setForm] = useState({
     nickname: '',
@@ -26,18 +28,21 @@ const HeroForm = () => {
       axios.get(`/heroes/${id}`)
         .then((res) => {
           setForm(res.data);
+          setImages(res.data.images || []);
         })
         .catch((err) => console.error('Error load hero', err));
     }
   }, [id]);
 
+  useEffect(() => {
+    if (form) {
+      setForm(prev => ({ ...prev, images }));
+    }
+  }, [images]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleFileChange = (e) => {
-    setForm((prev) => ({ ...prev, images: Array.from(e.target.files) }));
   };
 
   const handleSubmit = async (e) => {
@@ -45,8 +50,7 @@ const HeroForm = () => {
 
     try {
       if (isEditing) {
-        const { images, ...data } = form;
-        await axios.patch(`/heroes/${id}`, data);
+        await axios.patch(`/heroes/${id}`, form);
       } else {
         const formData = new FormData();
         formData.append('nickname', form.nickname);
@@ -139,14 +143,7 @@ const HeroForm = () => {
           placeholder="Catch Phrase"
           required={!isEditing}
         />
-        {!isEditing && (
-          <>
-            <label>Зображення:</label>
-            <input type="file" multiple accept="image/*" onChange={handleFileChange} />
-          </>
-        )}
-
-        {isEditing && (
+        {isEditing &&
           <div>
             <Typography variant="subtitle1" gutterBottom>
               Images:
@@ -157,12 +154,17 @@ const HeroForm = () => {
               height="auto"
               maxHeight="700px"
               cols="4"
-              btnDel={false}
+              heroId={form.id}
+              onImagesChange={setImages}
+              btnDel={true}
             />
-          
           </div>
-        )
         }
+        <UploadButton
+          heroId={id}
+          onImagesUploaded={(newFilenames) => setImages(prev => [...prev, ...newFilenames])}
+          onFilesSelected={(files) => setForm(prev => ({ ...prev, images: files }))}
+        />
         {errorMessage && (
           <Alert
             severity="error"
