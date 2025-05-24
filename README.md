@@ -30,11 +30,12 @@ npm install
 ### 3. Налаштування БД
 - Встановити [PostgreSQL](https://sbp.enterprisedb.com/getfile.jsp?fileid=1259563)
 - Створити БД
-- Створити .env в server та налаштувати .env файл
-- В client package.json замінити `"proxy": "http://localhost:5005"` на ваш порт
+- Створити .env в корені проекту та налаштувати .env файл
+
 #### Приклад .env:
 ```bash
 PORT=3001
+REACT_APP_API_PORT=3001
 POSTGRES_HOST=localhost
 POSTGRES_USER=postgres
 POSTGRES_DB=superHeroes
