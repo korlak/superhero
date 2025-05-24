@@ -10,7 +10,7 @@ import * as path from 'path'
   providers: [],
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env'
+      envFilePath: '../.env'
     }),
     ServeStaticModule.forRoot({
       rootPath: path.resolve(__dirname, 'static')
