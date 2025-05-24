@@ -24,8 +24,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "update-proxy": "node scripts/update-proxy.js",
-    "start": "npm run update-proxy && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -48,7 +47,10 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5005",
+  "options": {
+    "allowedHosts": ["localhost", ".localhost"],
+    "proxy": "https://localhost:5005/"
+  },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
